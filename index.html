@@ -36,10 +36,33 @@ AFRAME.registerComponent("physics-grab", {
     }
 });
 
+AFRAME.registerComponent("generatesphere", {
+    init: function(){
+
+        let button = this.el;
+        button.addEventListener('click', function() {
+            let scene = document.querySelector("#scene");
+            let newSphere = document.createElement('a-sphere');
+
+            newSphere.setAttribute('color', 'white');
+            newSphere.setAttribute('scale', '0.3 0.3 0.3');
+            newSphere.setAttribute('physx-body', "type: dynamic");
+            newSphere.setAttribute('position', `${Math.random() * 2 -1} 2 -5`);
+            newSphere.setAttribute('physics-grab');
+            newSphere.setAttribute('raycaster-target', 'canGrab: true');
+
+            scene.appendChild(newSphere);
+
+
+        });
+
+    }
+
+});
 
 </script>
 
-<a-scene environment="preset: default;"
+<a-scene id="scene" environment="preset: default;"
          physx="autoLoad: true; delay: 1000; wasmUrl: js/physx.release.wasm; useDefaultScene: false;">
         
     <a-assets>
@@ -56,7 +79,7 @@ AFRAME.registerComponent("physics-grab", {
 
     <a-entity 
         id="player" 
-        position="0 0 0" 
+        position="0 0 0"
         player-move="controllerListenerId: #controller-data;
                      navigationMeshClass: environmentGround;">
         
@@ -94,8 +117,8 @@ AFRAME.registerComponent("physics-grab", {
 
   <!-- Walls -->
   <a-box physx-body="type: static;" 
-           position="0 0.51 -10"
-           width="20" depth="0.1" height="1"
+           position="0 7.5 -10"
+           width="20" depth="0.1" height="15"
            material="src: #crate; repeat: 5 1;">
   </a-box>
 
@@ -106,22 +129,32 @@ AFRAME.registerComponent("physics-grab", {
   </a-box>
 
   <a-box physx-body="type: static;" 
-           position="10 0.51 0"
-           width="0.1" depth="20" height="1"
+           position="5 0.51 -7.5"
+           width="0.1" depth="5" height="15"
            material="src: #crate; repeat: 5 1;">
   </a-box>
 
   <a-box physx-body="type: static;" 
-           position="-10 0.51 0"
-           width="0.1" depth="20" height="1"
+           position="-5 0.51 -7.5"
+           width="0.1" depth="5" height="15"
            material="src: #crate; repeat: 5 1;">
   </a-box>
 
   <!-- Ramp -->
   <a-box
+           generatesphere
+           scale="0.5 0.5 0.5"
+           position="0 1 -5"
+           rotation="0 0 0"
+           color="red">
+  </a-box>
+
+
+
+  <a-box
     
     physx-body="type: static;"
-           depth="5" width="5"
+           depth="5" width="10"
            position="0 1 -10"
            rotation="45 0 0"
            material="src: #crate; color: #888888; repeat: 5 1;">
